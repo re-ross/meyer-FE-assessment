@@ -27,7 +27,7 @@ export const Product = ({ product }: PropsProduct) => {
         opened={opened}
         onClose={() => setOpened(false)}
       >
-        <ProductModal product={product} />
+        <ProductModal product={product} key={product.id} />
       </Modal>
     </Container>
   );

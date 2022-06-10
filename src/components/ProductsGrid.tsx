@@ -2,15 +2,22 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Product } from "./Product";
+import {
+  productTypeOptions,
+  productPriceOptions,
+  productRatingOptions,
+  productColorOptions,
+} from "../productOptions";
+import { SelectEvent } from "../types/Event.types";
 
 export const ProductsGrid = () => {
   const [products, setProducts] = useState([] as any[]);
   const [filter, setFilter] = useState<string | number>();
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (e: SelectEvent) => {
     setFilter(e.target.value);
   };
-  const handleChangeInt = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChangeInt = (e: SelectEvent) => {
     setFilter(parseInt(e.target.value));
   };
 
@@ -29,48 +36,28 @@ export const ProductsGrid = () => {
         <Filter>
           <FilterText>Filter Products:</FilterText>
           <Select onChange={handleChange}>
-            <option selected value="">
-              Type
-            </option>
-            <option value="bronzer">Bronzer</option>
-            <option value="blush">Blush</option>
-            <option value="lip_liner">Lip Liner</option>
-            <option value="lipstick">Lipstick</option>
-            <option value="foundation">Foundation</option>
-            <option value="eyeliner">Eye Liner</option>
-            <option value="eyeshadow">Eyeshadow</option>
-            <option value="nail_polish">Nail Polish</option>
-            <option value="mascara">Mascara</option>
-            <option value="cream">Cream</option>
+            <option value="">Type</option>
+            {productTypeOptions.map((option) => (
+              <option value={option.value} label={option.label} />
+            ))}
           </Select>
           <Select onChange={handleChangeInt}>
-            <option selected value="">
-              Price
-            </option>
-            <option value="5">$5 or under</option>
-            <option value="10-15">$10 - 15</option>
-            <option value="15-20">$15 - 20</option>
-            <option value="20">$20+</option>
+            <option value="">Price</option>
+            {productPriceOptions.map((option) => (
+              <option value={option.value} label={option.label} />
+            ))}
           </Select>
           <Select onChange={handleChangeInt}>
-            <option selected value="">
-              Rating
-            </option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option value="">Rating</option>
+            {productRatingOptions.map((option) => (
+              <option value={option.value} label={option.label} />
+            ))}
           </Select>
           <Select onChange={handleChange}>
-            <option selected value="">
-              Color
-            </option>
-            <option>XS</option>
-            <option>S</option>
-            <option>M</option>
-            <option>L</option>
-            <option>XL</option>
+            <option value="">Color</option>
+            {productColorOptions.map((option) => (
+              <option value={option.value} label={option.label} />
+            ))}
           </Select>
           {filter ? <p>{filter}</p> : null}
         </Filter>
@@ -93,6 +80,7 @@ export const ProductsGrid = () => {
     </Container>
   );
 };
+
 const Container = styled.div``;
 
 const FilterWrapper = styled.div`
