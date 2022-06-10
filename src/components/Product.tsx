@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styled from "styled-components";
+
 import { PropsProduct } from "../types/Props.interface";
 import Modal from "./Modal";
 
@@ -19,43 +19,26 @@ export const Product = ({ product }: PropsProduct) => {
           product={product}
         />
       ) : null}
-      <Container>
-        <Image src={product.image_link} />
-        <Title>{product.name}</Title>
-        <Number>${product.price}</Number>
+      <div className="flex flex-col items-center text-center border border-gray-50">
+        <img
+          className="h-1/2 w-1/2"
+          src={product.image_link}
+          alt={product.name}
+        />
+        <h3 className="text-sm">{product.name}</h3>
+        <h3 className="text-sm">${product.price}</h3>
         {product.rating ? (
-          <Number>{product.rating} /5 </Number>
+          <h3 className="text-sm">{product.rating} /5 </h3>
         ) : (
-          <Number>Be the first to rate!</Number>
+          <h3 className="text-sm">Be the first to rate!</h3>
         )}
-        <Button onClick={toggleModal}>View More</Button>
-      </Container>
+        <button
+          className="text-sm bg-transparent cursor-pointer rounded-sm"
+          onClick={toggleModal}
+        >
+          View More
+        </button>
+      </div>
     </>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  border: 1px solid gray;
-`;
-const Image = styled.img`
-  height: 50%;
-  width: 50%;
-`;
-const Title = styled.h3`
-  font-size: 14px;
-`;
-
-const Number = styled.h5`
-  font-size: 14px;
-`;
-
-const Button = styled.button`
-  font-size: 14px;
-  background-color: transparent;
-  cursor: pointer;
-  border-radius: 4px;
-`;

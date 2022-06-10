@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Product } from "./Product";
@@ -14,21 +13,12 @@ const ProductsGrid = () => {
       .then((res) => setProducts(res.data));
   }, []);
   return (
-    <Grid>
+    <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x">
       {products.map((product) => (
-        <Product product={product} key={product.id} />
+        <Product product={product} />
       ))}
-    </Grid>
+    </div>
   );
 };
 
 export default ProductsGrid;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 400px 400px;
-  grid-gap: 5px;
-  margin: 10px;
-  padding: 5px;
-`;
