@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Product } from "./Product";
 
-const ProductsGrid = () => {
+export const ProductsGrid = () => {
   const [products, setProducts] = useState([] as any[]);
 
   useEffect(() => {
@@ -22,8 +22,6 @@ const ProductsGrid = () => {
     </Grid>
   );
 };
-
-export default ProductsGrid;
 
 const Grid = styled.div`
   display: grid;

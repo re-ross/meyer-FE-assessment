@@ -1,8 +1,9 @@
-import ProductsGrid from "./components/ProductsGrid";
+import { Navbar, ProductsGrid } from "./components";
 
 function App() {
   return (
-    <div className="App">
+    <div>
+      <Navbar />
       <ProductsGrid />
     </div>
   );

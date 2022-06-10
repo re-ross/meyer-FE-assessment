@@ -19,6 +19,7 @@ export const Product = ({ product }: PropsProduct) => {
       )}
       <Button onClick={() => setOpened(true)}>View More</Button>
       <Modal
+        centered
         size="lg"
         transition="fade"
         transitionDuration={600}
