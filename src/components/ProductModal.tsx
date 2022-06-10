@@ -8,15 +8,21 @@ const ProductModal = ({ product }: PropsProduct) => {
       <Title>{product.name}</Title>
       <Info>${product.price}</Info>
       {product.rating ? (
-        <Info>{product.rating} / 5 </Info>
+        <Info>Rating: {product.rating} / 5 </Info>
       ) : (
         <Info>Not yet rated!</Info>
       )}
       {product.product_colors.map((color: any) => (
         <ColorWrapper>
-          <li key={color.colour_name}>{color.colour_name}</li>
+          <p key={color.colour_name}>{color.colour_name}</p>
         </ColorWrapper>
       ))}
+      <Info>
+        <b>Description:</b> {product.description}
+      </Info>
+      <a href={product.product_link}>
+        <Button>Product Page</Button>
+      </a>
     </Container>
   );
 };
@@ -41,9 +47,16 @@ const Info = styled.h5`
   font-size: 14px;
 `;
 
-const ColorWrapper = styled.ul`
+const ColorWrapper = styled.span`
   display: flex;
   flex-direction: row;
+`;
+
+const Button = styled.button`
+  font-size: 14px;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 4px;
 `;
 
 export default ProductModal;
