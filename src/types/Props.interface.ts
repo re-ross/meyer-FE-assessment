@@ -5,5 +5,6 @@ export interface PropsProduct {
     image_link: string;
     rating: number;
     price: number;
+    product_colors: [];
   };
 }

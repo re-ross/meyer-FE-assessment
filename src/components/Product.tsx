@@ -1,36 +1,34 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { PropsProduct } from "../types/Props.interface";
-import Modal from "./Modal";
+import { Modal } from "@mantine/core";
+import ProductModal from "./ProductModal";
 
 export const Product = ({ product }: PropsProduct) => {
-  const [showModal, setShowModal] = useState(false);
-
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
+  const [opened, setOpened] = useState(false);
 
   return (
-    <>
-      {showModal ? (
-        <Modal
-          //   showModal={showModal}
-          //   setShowModal={setShowModal}
-          product={product}
-        />
-      ) : null}
-      <Container>
-        <Image src={product.image_link} />
-        <Title>{product.name}</Title>
-        <Number>${product.price}</Number>
-        {product.rating ? (
-          <Number>{product.rating} /5 </Number>
-        ) : (
-          <Number>Be the first to rate!</Number>
-        )}
-        <Button onClick={toggleModal}>View More</Button>
-      </Container>
-    </>
+    <Container>
+      <Image src={product.image_link} />
+      <Title>{product.name}</Title>
+      <Number>${product.price}</Number>
+      {product.rating ? (
+        <Number>{product.rating} / 5 </Number>
+      ) : (
+        <Number>Be the first to rate!</Number>
+      )}
+      <Button onClick={() => setOpened(true)}>View More</Button>
+      <Modal
+        size="lg"
+        transition="fade"
+        transitionDuration={600}
+        transitionTimingFunction="ease"
+        opened={opened}
+        onClose={() => setOpened(false)}
+      >
+        <ProductModal product={product} />
+      </Modal>
+    </Container>
   );
 };
 

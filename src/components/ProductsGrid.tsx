@@ -11,7 +11,8 @@ const ProductsGrid = () => {
       .get(
         "http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
       )
-      .then((res) => setProducts(res.data));
+      .then((res) => setProducts(res.data))
+      .catch((err) => console.log(err));
   }, []);
   return (
     <Grid>
