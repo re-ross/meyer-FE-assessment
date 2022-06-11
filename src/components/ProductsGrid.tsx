@@ -11,21 +11,37 @@ import {
 import { SelectEvent } from "../types/Event.types";
 
 export const ProductsGrid = () => {
+  const baseUrl =
+    "http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline";
   const [products, setProducts] = useState([] as any[]);
-  const [filter, setFilter] = useState<string | number>();
 
-  const handleChange = (e: SelectEvent) => {
-    setFilter(e.target.value);
+  const [filter, setFilter] = useState("");
+
+  const filterByType = (e: SelectEvent) => {
+    axios
+      .get(baseUrl + `&product_type=${e.target.value}`)
+      .then((res) => setProducts(res.data))
+      .then(() => setFilter(e.target.value))
+      .catch((err) => console.log(err));
   };
-  const handleChangeInt = (e: SelectEvent) => {
-    setFilter(parseInt(e.target.value));
+  const filterByPrice = (e: SelectEvent) => {
+    axios
+      .get(baseUrl + `&price_less_than=${e.target.value}`)
+      .then((res) => setProducts(res.data))
+      .then(() => setFilter(e.target.value))
+      .catch((err) => console.log(err));
+  };
+  const filterByRating = (e: SelectEvent) => {
+    axios
+      .get(baseUrl + `&rating_less_than=${e.target.value}`)
+      .then((res) => setProducts(res.data))
+      .then(() => setFilter(e.target.value))
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
     axios
-      .get(
-        "http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
-      )
+      .get(baseUrl)
       .then((res) => setProducts(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -35,31 +51,30 @@ export const ProductsGrid = () => {
       <FilterWrapper>
         <Filter>
           <FilterText>Filter Products:</FilterText>
-          <Select onChange={handleChange}>
+          <Select onChange={filterByType}>
             <option value="">Type</option>
             {productTypeOptions.map((option) => (
               <option value={option.value} label={option.label} />
             ))}
           </Select>
-          <Select onChange={handleChangeInt}>
+          <Select onChange={filterByPrice}>
             <option value="">Price</option>
             {productPriceOptions.map((option) => (
               <option value={option.value} label={option.label} />
             ))}
           </Select>
-          <Select onChange={handleChangeInt}>
+          <Select onChange={filterByRating}>
             <option value="">Rating</option>
             {productRatingOptions.map((option) => (
               <option value={option.value} label={option.label} />
             ))}
           </Select>
-          <Select onChange={handleChange}>
+          <Select onChange={filterByRating}>
             <option value="">Color</option>
             {productColorOptions.map((option) => (
               <option value={option.value} label={option.label} />
             ))}
           </Select>
-          {filter ? <p>{filter}</p> : null}
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
@@ -69,26 +84,12 @@ export const ProductsGrid = () => {
           </Select>
         </Filter>
       </FilterWrapper>
-      {filter ? (
-        <Grid>
-          {products
-            .filter(
-              (product) =>
-                product.product_type === filter ||
-                product.price <= filter ||
-                product.rating <= filter
-            )
-            .map((product) => (
-              <Product product={product} key={product.id} />
-            ))}
-        </Grid>
-      ) : (
-        <Grid>
-          {products.map((product) => (
-            <Product product={product} key={product.id} />
-          ))}
-        </Grid>
-      )}
+      {filter ? <p>{filter}</p> : null}
+      <Grid>
+        {products.map((product) => (
+          <Product product={product} key={product.id} />
+        ))}
+      </Grid>
     </Container>
   );
 };
