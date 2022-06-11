@@ -14,18 +14,37 @@ import {
   filterByType,
   filterByPrice,
   filterByRating,
-  handleSort,
 } from "../hooks";
 
+import { SelectEvent } from "../types/Event.types";
 export const ProductsGrid = () => {
   const [products, setProducts] = useState([] as any[]);
   const [filter, setFilter] = useState<string | number>();
   const [sorting, setSorting] = useState("");
-  const [sortedProducts, setSortedProducts] = useState([] as any[]);
 
   useEffect(() => {
     getProducts(setProducts);
   }, []);
+
+  const handleSort = (
+    e: SelectEvent,
+
+    setSorting: React.SetStateAction<string | any>
+  ) => {
+    setSorting(e.target.value);
+
+    sort(sorting);
+  };
+
+  const sort = async (sorting: string) => {
+    if (sorting === "desc") {
+      products.sort((a: any, b: any) => a.price - b.price);
+    } else if (sorting === "asc") {
+      products.sort((a: any, b: any) => b.price - a.price);
+    } else if (sorting === "default") {
+      getProducts(setProducts);
+    }
+  };
 
   return (
     <Container>
@@ -59,18 +78,8 @@ export const ProductsGrid = () => {
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
-          <Select
-            onChange={(e) =>
-              handleSort(
-                e,
-                sorting,
-                setSorting,
-                sortedProducts,
-                setSortedProducts
-              )
-            }
-          >
-            <option value="" label="Default" />
+          <Select onChange={(e) => handleSort(e, setSorting)}>
+            <option value="default" label="Default" />
             <option value="asc" label="Ascending" />
             <option value="desc" label="Descending" />
           </Select>

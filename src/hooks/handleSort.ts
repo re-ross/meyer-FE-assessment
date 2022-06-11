@@ -13,14 +13,13 @@ export const handleSort = (
 
   axios.get(baseUrl).then((res) => setSortedProducts(res.data));
 
-  if (sorting === "asc") {
-    setSortedProducts(
-      sortedProducts.sort((a: any, b: any) => a.price - b.price)
-    );
-  } else if (sorting === "desc") {
-    setSortedProducts(
-      sortedProducts.sort((a: any, b: any) => b.price - a.price)
-    );
-  }
-  return sortedProducts;
+  // if (sorting === "asc") {
+  //   setSortedProducts(
+  //     sortedProducts.sort((a: any, b: any) => a.price - b.price)
+  //   );
+  // } else if (sorting === "desc") {
+  //   setSortedProducts(
+  //     sortedProducts.sort((a: any, b: any) => b.price - a.price)
+  //   );
+  // }
 };
