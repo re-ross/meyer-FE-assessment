@@ -61,11 +61,23 @@ export const ProductsGrid = () => {
           </Select>
           {filter ? <p>{filter}</p> : null}
         </Filter>
+        <Filter>
+          <FilterText>Sort Products:</FilterText>
+          <Select>
+            <option>Price (asc)</option>
+            <option>Price (desc)</option>
+          </Select>
+        </Filter>
       </FilterWrapper>
       {filter ? (
         <Grid>
           {products
-            .filter((product) => product.product_type === filter)
+            .filter(
+              (product) =>
+                product.product_type === filter ||
+                product.price <= filter ||
+                product.rating <= filter
+            )
             .map((product) => (
               <Product product={product} key={product.id} />
             ))}
@@ -109,5 +121,4 @@ const Grid = styled.div`
   grid-template-rows: 400px 400px;
   grid-gap: 5px;
   margin: 10px;
-  padding: 5px;
 `;

@@ -15,7 +15,7 @@ export const Product = ({ product }: PropsProduct) => {
       {product.rating ? (
         <Number>{product.rating} / 5 </Number>
       ) : (
-        <Number>Be the first to rate!</Number>
+        <Number>Be the first to leave a rating!</Number>
       )}
       <Button onClick={() => setOpened(true)}>View More</Button>
       <Modal
@@ -41,11 +41,11 @@ const Container = styled.div`
   border: 1px solid gray;
 `;
 const Image = styled.img`
-  height: 50%;
-  width: 50%;
+  height: 70%;
+  width: 70%;
 `;
 const Title = styled.h3`
-  font-size: 14px;
+  font-size: 20px;
 `;
 
 const Number = styled.h5`
