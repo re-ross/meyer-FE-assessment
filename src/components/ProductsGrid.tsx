@@ -15,16 +15,25 @@ import {
   filterByPrice,
   filterByRating,
 } from "../hooks";
-
+import ReactPaginate from "react-paginate";
 import { SelectEvent } from "../types/Event.types";
+import "../app.css";
+
 export const ProductsGrid = () => {
   const [products, setProducts] = useState([] as any[]);
   const [filter, setFilter] = useState<string | number>();
   const [sorting, setSorting] = useState("");
+  const [postsPerPage] = useState(5);
+  const [offset, setOffset] = useState(1);
+  const [pageCount, setPageCount] = useState(0);
 
   useEffect(() => {
     getProducts(setProducts);
-  }, []);
+
+    const slice = products.slice(offset - 1, offset - 1 + postsPerPage);
+    setPageCount(Math.ceil(products.length / postsPerPage));
+    const pageProducts = setProducts(slice);
+  }, [offset]);
 
   const handleSort = (
     e: SelectEvent,
@@ -37,6 +46,11 @@ export const ProductsGrid = () => {
     } else if (sorting === "asc") {
       setProducts(products.sort((a: any, b: any) => b.price - a.price));
     }
+  };
+  const handlePageClick = (e: React.MouseEvent) => {
+    const selectedPage = e.target as HTMLButtonElement;
+    //@ts-ignore
+    setOffset(selectedPage + 1);
   };
 
   return (
@@ -90,6 +104,18 @@ export const ProductsGrid = () => {
           <Product product={product} key={product.id} />
         ))}
       </Grid>
+      <ReactPaginate
+        previousLabel={"previous"}
+        nextLabel={"next"}
+        breakLabel={"..."}
+        breakClassName={"break-me"}
+        pageCount={pageCount}
+        onPageChange={() => handlePageClick}
+        containerClassName={"pagination"}
+        //@ts-ignore
+        subContainerClassName={"pages pagination"}
+        activeClassName={"active"}
+      />
     </Container>
   );
 };
