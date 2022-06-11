@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Product } from "./Product";
 import {
@@ -7,43 +6,25 @@ import {
   productPriceOptions,
   productRatingOptions,
   productColorOptions,
-} from "../productOptions";
-import { SelectEvent } from "../types/Event.types";
+} from "../common/productOptions";
+import {
+  getProducts,
+  filterByColor,
+  handleClick,
+  filterByType,
+  filterByPrice,
+  filterByRating,
+  handleSort,
+} from "../hooks";
 
 export const ProductsGrid = () => {
-  const baseUrl =
-    "http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline";
   const [products, setProducts] = useState([] as any[]);
-
-  const [filter, setFilter] = useState("");
-
-  const filterByType = (e: SelectEvent) => {
-    axios
-      .get(baseUrl + `&product_type=${e.target.value}`)
-      .then((res) => setProducts(res.data))
-      .then(() => setFilter(e.target.value))
-      .catch((err) => console.log(err));
-  };
-  const filterByPrice = (e: SelectEvent) => {
-    axios
-      .get(baseUrl + `&price_less_than=${e.target.value}`)
-      .then((res) => setProducts(res.data))
-      .then(() => setFilter(e.target.value))
-      .catch((err) => console.log(err));
-  };
-  const filterByRating = (e: SelectEvent) => {
-    axios
-      .get(baseUrl + `&rating_less_than=${e.target.value}`)
-      .then((res) => setProducts(res.data))
-      .then(() => setFilter(e.target.value))
-      .catch((err) => console.log(err));
-  };
+  const [filter, setFilter] = useState<string | number>();
+  const [sorting, setSorting] = useState("");
+  const [sortedProducts, setSortedProducts] = useState([] as any[]);
 
   useEffect(() => {
-    axios
-      .get(baseUrl)
-      .then((res) => setProducts(res.data))
-      .catch((err) => console.log(err));
+    getProducts(setProducts);
   }, []);
 
   return (
@@ -51,25 +32,25 @@ export const ProductsGrid = () => {
       <FilterWrapper>
         <Filter>
           <FilterText>Filter Products:</FilterText>
-          <Select onChange={filterByType}>
+          <Select onChange={(e) => filterByType(e, setFilter, setProducts)}>
             <option value="">Type</option>
             {productTypeOptions.map((option) => (
               <option value={option.value} label={option.label} />
             ))}
           </Select>
-          <Select onChange={filterByPrice}>
+          <Select onChange={(e) => filterByPrice(e, setFilter, setProducts)}>
             <option value="">Price</option>
             {productPriceOptions.map((option) => (
               <option value={option.value} label={option.label} />
             ))}
           </Select>
-          <Select onChange={filterByRating}>
+          <Select onChange={(e) => filterByRating(e, setFilter, setProducts)}>
             <option value="">Rating</option>
             {productRatingOptions.map((option) => (
               <option value={option.value} label={option.label} />
             ))}
           </Select>
-          <Select onChange={filterByRating}>
+          <Select onChange={(e) => filterByColor(e, setFilter)}>
             <option value="">Color</option>
             {productColorOptions.map((option) => (
               <option value={option.value} label={option.label} />
@@ -78,13 +59,31 @@ export const ProductsGrid = () => {
         </Filter>
         <Filter>
           <FilterText>Sort Products:</FilterText>
-          <Select>
-            <option>Price (asc)</option>
-            <option>Price (desc)</option>
+          <Select
+            onChange={(e) =>
+              handleSort(
+                e,
+                sorting,
+                setSorting,
+                sortedProducts,
+                setSortedProducts
+              )
+            }
+          >
+            <option value="" label="Default" />
+            <option value="asc" label="Ascending" />
+            <option value="desc" label="Descending" />
           </Select>
         </Filter>
       </FilterWrapper>
-      {filter ? <p>{filter}</p> : null}
+      {filter ? (
+        <FilterSpan>
+          {filter}
+          <CloseButton onClick={() => handleClick(setFilter, setProducts)}>
+            x
+          </CloseButton>
+        </FilterSpan>
+      ) : null}
       <Grid>
         {products.map((product) => (
           <Product product={product} key={product.id} />
@@ -109,6 +108,17 @@ const FilterText = styled.span`
   font-size: 20px;
   font-weight: 600;
   margin-right: 20px;
+`;
+
+const FilterSpan = styled.span`
+  margin-left: 10px;
+  border: 1px solid gray;
+  padding: 5px;
+`;
+
+const CloseButton = styled.button`
+  background-color: #ec4e20;
+  margin-left: 5px; ;
 `;
 
 const Select = styled.select`

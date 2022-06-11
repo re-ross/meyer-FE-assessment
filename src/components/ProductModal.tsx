@@ -20,7 +20,7 @@ const ProductModal = ({ product }: PropsProduct) => {
       <Info>
         <b>Description:</b> {product.description}
       </Info>
-      <a href={product.product_link}>
+      <a href={product.product_link} target="_blank" rel="noopener noreferrer">
         <Button>Product Page</Button>
       </a>
     </Container>
