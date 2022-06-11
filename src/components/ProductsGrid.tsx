@@ -28,21 +28,14 @@ export const ProductsGrid = () => {
 
   const handleSort = (
     e: SelectEvent,
-
+    sorting: string,
     setSorting: React.SetStateAction<string | any>
   ) => {
     setSorting(e.target.value);
-
-    sort(sorting);
-  };
-
-  const sort = async (sorting: string) => {
     if (sorting === "desc") {
-      products.sort((a: any, b: any) => a.price - b.price);
+      setProducts(products.sort((a: any, b: any) => a.price - b.price));
     } else if (sorting === "asc") {
-      products.sort((a: any, b: any) => b.price - a.price);
-    } else if (sorting === "default") {
-      getProducts(setProducts);
+      setProducts(products.sort((a: any, b: any) => b.price - a.price));
     }
   };
 
@@ -77,10 +70,9 @@ export const ProductsGrid = () => {
           </Select>
         </Filter>
         <Filter>
-          <FilterText>Sort Products:</FilterText>
-          <Select onChange={(e) => handleSort(e, setSorting)}>
-            <option value="default" label="Default" />
-            <option value="asc" label="Ascending" />
+          <FilterText>Sort Products By Price:</FilterText>
+          <Select onChange={(e) => handleSort(e, sorting, setSorting)}>
+            <option value="asc" label="Ascending" selected />
             <option value="desc" label="Descending" />
           </Select>
         </Filter>

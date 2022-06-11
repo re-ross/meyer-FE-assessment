@@ -41,8 +41,9 @@ const Container = styled.div`
   border: 1px solid gray;
 `;
 const Image = styled.img`
-  height: 70%;
-  width: 70%;
+  height: 60%;
+  width: 60%;
+  padding: 10px;
 `;
 const Title = styled.h3`
   font-size: 20px;

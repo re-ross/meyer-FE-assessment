@@ -70,7 +70,7 @@ export const productRatingOptions = [
     value: 4,
   },
   {
-    label: "5 Stars",
+    label: "< 5 Stars",
     value: 6,
   },
 ];
